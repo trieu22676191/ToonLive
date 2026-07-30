@@ -35,7 +35,7 @@ Tạo docker-compose.yml chạy PostgreSQL và Redis cho local dev.
 **Prompt gợi ý:**
 ```
 Trong packages/shared/prisma/schema.prisma, định nghĩa các model sau:
-- User(id, email, createdAt)
+- User(id, email, password [hash bcrypt, chưa làm route login/register ở giai đoạn này], createdAt)
 - Comic(id, userId, title, videoUrl String?, createdAt) — quan hệ tới User
 - Page(id, comicId, pageNumber Int, imageUrl, createdAt) — quan hệ tới Comic
 - Character(id, comicId, name, voiceId, createdAt) — quan hệ tới Comic

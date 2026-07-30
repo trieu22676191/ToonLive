@@ -16,7 +16,7 @@ describe("POST /comics/:comicId/pages", () => {
 
   beforeAll(async () => {
     const user = await prisma.user.create({
-      data: { email: `pages-test-${Date.now()}@example.com` },
+      data: { email: `pages-test-${Date.now()}@example.com`, password: "hashed-password" },
     });
     userId = user.id;
     const comic = await prisma.comic.create({

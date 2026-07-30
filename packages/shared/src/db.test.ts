@@ -10,7 +10,7 @@ describe("Prisma Client", () => {
   it("inserts and queries a User", async () => {
     const email = `test-${Date.now()}@example.com`;
 
-    const created = await prisma.user.create({ data: { email } });
+    const created = await prisma.user.create({ data: { email, password: "hashed-password" } });
     const found = await prisma.user.findUnique({ where: { id: created.id } });
 
     expect(found?.email).toBe(email);
