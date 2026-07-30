@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  comics Comic[]
+}
+
+model Comic {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  videoUrl  String?
+  createdAt DateTime @default(now())
+
+  user       User        @relation(fields: [userId], references: [id])
+  pages      Page[]
+  characters Character[]
+}
+
+model Page {
+  id         String   @id @default(cuid())
+  comicId    String
+  pageNumber Int
+  imageUrl   String
+  createdAt  DateTime @default(now())
+
+  comic         Comic          @relation(fields: [comicId], references: [id])
+  dialogueLines DialogueLine[]
+}
+
+model Character {
+  id        String   @id @default(cuid())
+  comicId   String
+  name      String
+  voiceId   String
+  createdAt DateTime @default(now())
+
+  comic         Comic          @relation(fields: [comicId], references: [id])
+  dialogueLines DialogueLine[]
+}
+
+model DialogueLine {
+  id          String   @id @default(cuid())
+  pageId      String
+  characterId String?
+  text        String
+  bboxX       Float
+  bboxY       Float
+  bboxWidth   Float
+  bboxHeight  Float
+  orderIndex  Int
+  audioUrl    String?
+  createdAt   DateTime @default(now())
+
+  page      Page       @relation(fields: [pageId], references: [id])
+  character Character? @relation(fields: [characterId], references: [id])
+}
