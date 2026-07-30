@@ -1,0 +1,8 @@
+{
+  "name": "comic-to-voice",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
