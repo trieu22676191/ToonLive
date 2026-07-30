@@ -7,6 +7,7 @@
 - Mỗi **task** (ví dụ Task 1.1, Task 1.2...) tương ứng với **ít nhất 1 commit riêng**, không gộp nhiều task vào 1 commit lớn.
 - Code phải chạy được (đạt Acceptance Criteria của task đó) trước khi commit — không commit code dở dang giữa chừng lên nhánh chính.
 - Vì làm 1 mình, không bắt buộc Pull Request, nhưng vẫn nên dùng nhánh riêng cho từng giai đoạn để dễ rollback nếu 1 giai đoạn bị lỗi nặng.
+- **Luôn hỏi xác nhận người dùng trước mỗi lần `git push`** (kể cả push nhánh phụ, không riêng `main`). Commit local thì không cần hỏi, nhưng trước khi đẩy lên remote phải chờ đồng ý.
 
 ## 2. Chiến lược nhánh (branching)
 
