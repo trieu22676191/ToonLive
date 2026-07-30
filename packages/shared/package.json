@@ -11,7 +11,8 @@
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0"
+    "@prisma/client": "^5.22.0",
+    "cloudinary": "^2.5.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
