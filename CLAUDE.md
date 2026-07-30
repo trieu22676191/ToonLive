@@ -27,7 +27,7 @@ User upload ảnh trang truyện
         ↓
    Lưu ảnh lên Cloudinary (object storage + CDN)
         ↓
-   OCR (Google Cloud Vision) chạy nền qua BullMQ worker
+   OCR (OCR.space) chạy nền qua BullMQ worker
    → tách được các dòng thoại + vị trí (bounding box)
         ↓
    User vào giao diện, xem ảnh + các ô thoại overlay
@@ -55,7 +55,7 @@ User upload ảnh trang truyện
 | ORM / Database | Prisma + PostgreSQL |
 | Xử lý tác vụ nền | BullMQ + Redis |
 | Lưu trữ file | Cloudinary (dùng SDK chính thức `cloudinary`) |
-| OCR | Google Cloud Vision API (`@google-cloud/vision`) |
+| OCR | OCR.space API (REST, free tier không cần billing) |
 | Text-to-Speech | FPT.AI TTS hoặc Google Cloud TTS (gọi qua REST API, ưu tiên giọng tiếng Việt tự nhiên) |
 | Ghép video | FFmpeg qua `fluent-ffmpeg` |
 | Deploy | Railway (3 service: api, worker, web — hoặc web deploy riêng qua Vercel/Netlify) |
