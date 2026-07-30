@@ -75,14 +75,21 @@ Validate bằng zod: chỉ nhận .jpg/.png/.webp, giới hạn 10MB.
 
 ---
 
-## Task 1.4 — Tích hợp OCR (Google Cloud Vision)
+## Task 1.4 — Tích hợp OCR (OCR.space)
+
+> Đổi từ Google Cloud Vision sang OCR.space vì Google Cloud Vision bắt buộc bật billing
+> (liên kết thẻ) kể cả khi dùng free tier, và việc bật billing gặp lỗi phía ngân hàng
+> không xử lý được lúc đó. OCR.space có free tier ~25.000 request/tháng, chỉ cần đăng ký
+> email lấy API key, không cần thẻ. Đánh đổi: độ chính xác tiếng Việt thấp hơn Google
+> Vision — cần đánh giá kỹ ở bước test cuối giai đoạn, đổi lại provider khác nếu không đạt.
 
 **Prompt gợi ý:**
 ```
-Trong packages/shared/src/services/ocr.service.ts, dùng @google-cloud/vision
-(hoặc gọi REST API trực tiếp nếu không muốn cài SDK nặng). Viết hàm
+Trong packages/shared/src/services/ocr.service.ts, gọi REST API của OCR.space
+(https://api.ocr.space/parse/image) với apikey, url ảnh, language=vie,
+isOverlayRequired=true để lấy toạ độ. Viết hàm
 extractTextBlocks(imageUrl: string) trả về mảng { text, bboxX, bboxY, bboxWidth,
-bboxHeight }.
+bboxHeight }, tính bbox từ Words trong mỗi Line của TextOverlay.
 
 Trong apps/api, tạo route POST /comics/pages/:pageId/ocr — gọi ocr.service,
 lưu kết quả thành các DialogueLine (characterId để null, orderIndex theo thứ
