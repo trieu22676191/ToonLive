@@ -23,6 +23,15 @@ export async function pagesRoutes(app: FastifyInstance) {
       return reply.status(400).send({ error: "Chỉ chấp nhận .jpg/.png/.webp" });
     }
 
+    // Phải đọc hết file trước khi field.fields chứa các field gửi sau file
+    // trong cùng multipart request (busboy chỉ tiếp tục parse sau khi file
+    // stream được tiêu thụ hết).
+    const fileBuffer = await file.toBuffer();
+
+    if (fileBuffer.byteLength > MAX_FILE_SIZE_BYTES) {
+      return reply.status(400).send({ error: "File vượt quá 10MB" });
+    }
+
     const pageNumberField = file.fields.pageNumber;
     const pageNumberValue =
       pageNumberField && "value" in pageNumberField ? pageNumberField.value : undefined;
@@ -30,12 +39,6 @@ export async function pagesRoutes(app: FastifyInstance) {
 
     if (!pageNumberResult.success) {
       return reply.status(400).send({ error: "pageNumber không hợp lệ" });
-    }
-
-    const fileBuffer = await file.toBuffer();
-
-    if (fileBuffer.byteLength > MAX_FILE_SIZE_BYTES) {
-      return reply.status(400).send({ error: "File vượt quá 10MB" });
     }
 
     const imageUrl = await uploadFile(fileBuffer, `${comicId}-${Date.now()}-${file.filename}`);
