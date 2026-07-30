@@ -2,7 +2,7 @@
 
 > Trước khi bắt đầu, đọc file `CLAUDE.md` ở thư mục gốc để hiểu bối cảnh tổng thể dự án. Stack: Node.js/TypeScript, Fastify, Prisma, PostgreSQL.
 
-**Mục tiêu giai đoạn:** Có API Fastify chạy được, kết nối database qua Prisma, upload được ảnh trang truyện lên Cloudflare R2, và OCR nhận diện được chữ trong bong bóng thoại.
+**Mục tiêu giai đoạn:** Có API Fastify chạy được, kết nối database qua Prisma, upload được ảnh trang truyện lên Cloudinary, và OCR nhận diện được chữ trong bong bóng thoại.
 
 ---
 
@@ -19,8 +19,8 @@ packages/shared/ (Prisma schema + types dùng chung)
 Trong apps/api, setup Fastify với TypeScript (tsx hoặc ts-node-dev cho dev mode).
 Cài đặt: fastify, @fastify/cors, @fastify/multipart, dotenv, zod (validate input).
 Tạo route GET /health trả về { status: "ok" }.
-Tạo .env.example ở root với: DATABASE_URL, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY,
-R2_BUCKET_NAME, R2_ENDPOINT, GOOGLE_VISION_API_KEY, REDIS_URL.
+Tạo .env.example ở root với: DATABASE_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY,
+CLOUDINARY_API_SECRET, GOOGLE_VISION_API_KEY, REDIS_URL.
 Tạo docker-compose.yml chạy PostgreSQL và Redis cho local dev.
 ```
 
@@ -54,22 +54,23 @@ vào database local. Export Prisma Client instance dùng chung từ packages/sha
 
 ---
 
-## Task 1.3 — Upload ảnh lên Cloudflare R2
+## Task 1.3 — Upload ảnh lên Cloudinary
 
 **Prompt gợi ý:**
 ```
-Trong packages/shared/src/services/storage.service.ts, dùng @aws-sdk/client-s3
-kết nối Cloudflare R2 (S3-compatible, endpoint lấy từ .env). Viết hàm
-uploadFile(fileBuffer: Buffer, filename: string): Promise<string> trả về public URL.
+Trong packages/shared/src/services/storage.service.ts, dùng SDK chính thức
+`cloudinary` (cấu hình cloud_name/api_key/api_secret từ .env). Viết hàm
+uploadFile(fileBuffer: Buffer, filename: string): Promise<string> trả về public URL
+(dùng uploader.upload_stream để upload trực tiếp từ Buffer, không cần lưu file tạm).
 
 Trong apps/api, dùng @fastify/multipart để nhận file upload. Tạo route:
 POST /comics/:comicId/pages — nhận file ảnh upload, gọi storage.service để lưu
-lên R2, tạo record Page trong DB qua Prisma, trả về page object.
+lên Cloudinary, tạo record Page trong DB qua Prisma, trả về page object.
 Validate bằng zod: chỉ nhận .jpg/.png/.webp, giới hạn 10MB.
 ```
 
 **Acceptance criteria:**
-- [ ] Test bằng Postman/curl upload 1 ảnh thật, ảnh xuất hiện trên R2 bucket
+- [ ] Test bằng Postman/curl upload 1 ảnh thật, ảnh xuất hiện trên Cloudinary Media Library
 - [ ] Record Page được tạo đúng trong DB với imageUrl hợp lệ
 
 ---

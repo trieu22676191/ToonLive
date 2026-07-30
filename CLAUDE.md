@@ -25,7 +25,7 @@ Tác giả truyện tranh nghiệp dư/webtoon muốn tạo video quảng bá t�
 ```
 User upload ảnh trang truyện
         ↓
-   Lưu ảnh lên Cloudflare R2 (object storage)
+   Lưu ảnh lên Cloudinary (object storage + CDN)
         ↓
    OCR (Google Cloud Vision) chạy nền qua BullMQ worker
    → tách được các dòng thoại + vị trí (bounding box)
@@ -35,7 +35,7 @@ User upload ảnh trang truyện
    → chọn giọng đọc cho Character đó
         ↓
    Trigger TTS (FPT.AI/Google TTS) chạy nền qua BullMQ worker
-   → sinh file audio cho từng dòng thoại, lưu lên R2
+   → sinh file audio cho từng dòng thoại, lưu lên Cloudinary
         ↓
    Trigger render video (FFmpeg qua fluent-ffmpeg) chạy nền qua BullMQ worker
    → ghép ảnh trang + audio theo đúng thứ tự thành video hoàn chỉnh
@@ -54,7 +54,7 @@ User upload ảnh trang truyện
 | Frontend | React + Vite (SPA thuần, không SSR) |
 | ORM / Database | Prisma + PostgreSQL |
 | Xử lý tác vụ nền | BullMQ + Redis |
-| Lưu trữ file | Cloudflare R2 (S3-compatible, dùng AWS SDK v3 `@aws-sdk/client-s3`) |
+| Lưu trữ file | Cloudinary (dùng SDK chính thức `cloudinary`) |
 | OCR | Google Cloud Vision API (`@google-cloud/vision`) |
 | Text-to-Speech | FPT.AI TTS hoặc Google Cloud TTS (gọi qua REST API, ưu tiên giọng tiếng Việt tự nhiên) |
 | Ghép video | FFmpeg qua `fluent-ffmpeg` |
