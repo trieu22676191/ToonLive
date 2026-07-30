@@ -52,7 +52,7 @@ Dùng format [Conventional Commits](https://www.conventionalcommits.org/), gắn
 ```
 chore(1.1): khởi tạo monorepo, setup Fastify + health check
 feat(1.2): thêm Prisma schema và migration đầu tiên
-feat(1.3): thêm endpoint upload ảnh lên Cloudflare R2
+feat(1.3): thêm endpoint upload ảnh lên Cloudinary
 feat(1.4): tích hợp OCR Google Vision, lưu DialogueLine
 feat(2.1): setup BullMQ queue + worker xử lý OCR nền
 feat(3.1): thêm CRUD Character

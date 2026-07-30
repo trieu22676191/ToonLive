@@ -49,7 +49,7 @@ chọn 1 bên] qua REST (dùng fetch hoặc axios).
 
 Trong apps/worker: tạo processor mới lắng nghe ttsQueue. Job data { lineId }:
 lấy text + voiceId (từ character gán cho dòng thoại đó qua Prisma) → gọi
-tts.service → upload audio buffer lên R2 qua storage.service → cập nhật
+tts.service → upload audio buffer lên Cloudinary qua storage.service → cập nhật
 audioUrl vào DialogueLine.
 
 Trong apps/api: tạo route POST /dialogue-lines/:lineId/generate-audio — đẩy job

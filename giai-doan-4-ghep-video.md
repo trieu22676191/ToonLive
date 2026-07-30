@@ -37,8 +37,8 @@ chạy migration mới.
 Trong apps/worker: tạo processor mới lắng nghe videoQueue. Job data { comicId }:
 lấy tất cả Page của comic theo thứ tự (Prisma orderBy pageNumber), với mỗi page
 lấy các DialogueLine đã có audioUrl theo orderIndex, tải ảnh + audio về thư mục
-tạm (dùng fs + fetch để download từ R2 URL), gọi video.service để render từng
-trang rồi ghép toàn bộ, upload video final lên R2 qua storage.service, cập nhật
+tạm (dùng fs + fetch để download từ Cloudinary URL), gọi video.service để render từng
+trang rồi ghép toàn bộ, upload video final lên Cloudinary qua storage.service, cập nhật
 videoUrl vào Comic qua Prisma. Nhớ cleanup file tạm sau khi xong.
 
 Trong apps/api: tạo route POST /comics/:comicId/render-video — đẩy job vào
@@ -58,7 +58,7 @@ comic gồm videoUrl nếu có.
 Trong apps/web, tạo trang ResultPage: nút 'Tạo video' gọi API render-video,
 hiển thị trạng thái xử lý (loading/progress) bằng cách poll job status định kỳ
 (React Query refetchInterval), khi xong hiển thị video player (thẻ <video>)
-phát video kết quả và nút tải xuống (link trực tiếp tới videoUrl trên R2).
+phát video kết quả và nút tải xuống (link trực tiếp tới videoUrl trên Cloudinary).
 ```
 
 **Acceptance criteria:**
